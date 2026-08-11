@@ -89,7 +89,3 @@ def delete_student(student_id: int):
 
     deleted = students_db.pop(student_id)
     return {"message": "Student deleted successfully", "deleted_data": deleted}
-        return {"error": "Student not found"}
-
-    deleted = students_db.pop(student_id)
-    return {"message": "Student deleted successfully", "deleted_data": deleted}
