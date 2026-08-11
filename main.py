@@ -1,15 +1,27 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 
-app = FastAPI(title="Lucky")
+app = FastAPI(title="Student Details Management API")
+students_db = {
+    1:{"name":"BhagyaSri","age":21,"course":"Data Analytics"}
+    2:{"name":"Harika","age":21,"course":"Data Analytics"}
+    3:{"name":"Lakshmi Durga","age":22,"course":"Data Analytics"}
+    4:{"name":"Srija","age":21,"course":"Data Science"}
+}
+#Data Validation Model
+class Student(BaseModel):
+    name: str
+    age: int
+    course: str
+   #READ (GET) - View All or Filter by Course
+    @app.get("/students/")
+def get_students(course: str = None):
+    if course:
+        filtered = {
+            s_id: s
+            for s_id, s in students_db.items()
+            if s["course"].lower() == course.lower()
+        }
+        return filtered
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-@app.get("/name")
-def read_name():
-    return {"name": "lakshmi"}
-
-@app.get("/batch")
-def read_batch():
-    return {"batch": "Batch 55B"}
+    return students_db
